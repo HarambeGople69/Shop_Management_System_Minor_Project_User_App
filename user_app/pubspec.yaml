@@ -37,6 +37,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  
   flutter_launcher_icons: ^0.9.3
   flutter_screenutil: ^5.5.2
   firebase_auth: ^3.3.19
@@ -77,11 +78,15 @@ dependencies:
   badges: ^2.0.3
   google_maps_flutter: ^2.1.8
   sms_autofill: ^2.2.0
+  # vibration: ^1.7.3
   google_map_location_picker_flutter: ^0.0.115
   # google_map_location_picker: ^4.1.7
   google_maps_pick_place: ^0.8.7
   geolocator: ^8.0.5
   geocoding: ^2.0.2
+  dotted_border: ^2.0.0+2
+  file_picker: ^4.6.1
+  flutter_vibrate: ^1.3.0
   # google_maps_place_picker_mb: ^2.0.0-mb.20
   # google_map_location_picker: ^4.1.7
   # flutter_snake_navigationbar: ^0.6.1

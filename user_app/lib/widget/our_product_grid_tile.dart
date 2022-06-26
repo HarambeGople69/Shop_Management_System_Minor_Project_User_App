@@ -1,13 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutx/flutx.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:myapp/models/product_model.dart';
 import 'package:myapp/widget/our_sized_box.dart';
-
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import '../screens/dashboard_screen/shopping_product_screen.dart';
 import '../services/firestore_service/userprofile_detail.dart';
 import '../utils/generator.dart';
@@ -95,9 +96,21 @@ class _ProductGridTileState extends State<ProductGridTile> {
                         )
                       : InkWell(
                           onTap: () async {
+                            print("HELLO WORLD");
+                            // await HapticFeedback.vibrate();
+                            // await HapticFeedback.heavyImpact();
+                            // await HapticFeedback.lightImpact();
+                            // await HapticFeedback.selectionClick();
                             await UserDetailFirestore()
                                 .addFavorite(widget.productModel);
                             print("Favourite Added");
+                            // Check if the device can vibrate
+                            // bool canVibrate = await Vibrate.canVibrate;
+
+// Vibrate
+// Vibration duration is a constant 500ms because
+// it cannot be set to a specific duration on iOS.
+                            Vibrate.vibrate();
                           },
                           child: Icon(
                             MdiIcons.heartOutline,

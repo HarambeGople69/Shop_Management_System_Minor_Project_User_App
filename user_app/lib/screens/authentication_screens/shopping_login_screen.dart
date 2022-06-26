@@ -18,6 +18,7 @@ import 'package:myapp/widget/our_flutter_toast.dart';
 import 'package:myapp/widget/our_sized_box.dart';
 import 'package:myapp/widget/our_text_field.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 import '../../controller/login_controller.dart';
 import '../../db/db_helper.dart';
@@ -99,9 +100,22 @@ class _ShoppingLoginScreenState extends State<ShoppingLoginScreen> {
                               if (_phone_number_controller.text
                                   .trim()
                                   .isEmpty) {
+                               
+
                                 OurToast()
                                     .showErrorToast("Field can't be empty");
                               } else {
+                                 var appSignatureID =
+                                    await SmsAutoFill().getAppSignature;
+                                print("==========");
+                                print("==========");
+                                print("==========");
+                                print("==========");
+                                print(appSignatureID);
+                                print("==========");
+                                print("==========");
+                                print("==========");
+                                print("==========");
                                 await PhoneAuth().sendLoginOTP(
                                   _phone_number_controller.text.trim(),
                                   context,
@@ -113,7 +127,7 @@ class _ShoppingLoginScreenState extends State<ShoppingLoginScreen> {
                         OurSizedBox(),
                         Center(
                           child: FxButton.text(
-                            onPressed: () {
+                            onPressed: () async {
                               Navigator.push(
                                 context,
                                 PageTransition(

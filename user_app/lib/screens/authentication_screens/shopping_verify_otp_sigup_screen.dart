@@ -8,8 +8,10 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:myapp/utils/color.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pinput/pin_put/pin_put.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 import '../../controller/login_controller.dart';
+import '../../controller/otp_controller.dart';
 import '../../services/phone_auth/phone_auth.dart';
 import '../../widget/our_elevated_button.dart';
 import '../../widget/our_flutter_toast.dart';
@@ -45,8 +47,24 @@ class _VerifyOPTSignUpScreenState extends State<VerifyOPTSignUpScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Get.find<OTPController>().clearOTP;
+    listenOtp();
+  }
+
+  void listenOtp() async {
+    // await SmsAutoFill().unregisterListener();
+    // listenForCode();
+    await SmsAutoFill().listenForCode;
+    print("OTP listen Called");
+  }
+
+  @override
   void dispose() {
-    // TODO: implement dispose
+    SmsAutoFill().unregisterListener();
+    print("unregisterListener");
     super.dispose();
   }
 
@@ -126,49 +144,80 @@ class _VerifyOPTSignUpScreenState extends State<VerifyOPTSignUpScreen> {
                         ],
                       ),
                       const OurSizedBox(),
-                      PinPut(
-                        eachFieldMargin: EdgeInsets.symmetric(
-                          horizontal: ScreenUtil().setSp(5),
+                      Container(
+                        margin: EdgeInsets.symmetric(
+                          horizontal: ScreenUtil().setSp(30),
                         ),
-                        fieldsAlignment: MainAxisAlignment.center,
-                        eachFieldConstraints: BoxConstraints(
-                          maxHeight: ScreenUtil().setSp(40),
-                          maxWidth: ScreenUtil().setSp(40),
-                        ),
-                        textStyle: TextStyle(
-                          fontSize: ScreenUtil().setSp(15),
-                        ),
-                        separator: SizedBox(
-                          width: ScreenUtil().setSp(5),
-                        ),
-                        fieldsCount: 6,
-                        onChanged: (String pins) {
-                          setState(() {
-                            pin = pins;
-                          });
-                        },
-                        onSubmit: (String pin) {
-                          _showSnackBar(pin, context);
-                          FocusScope.of(context).unfocus();
-                        },
-                        validator: (value) {
-                          if (value!.trim().isNotEmpty) {
-                            return null;
-                          } else {
-                            return "Please fill otp";
-                          }
-                        },
-                        focusNode: _pinPutFocusNode,
-                        controller: _pinPutController,
-                        submittedFieldDecoration: _pinPutDecoration,
-                        selectedFieldDecoration: _pinPutDecoration,
-                        followingFieldDecoration: _pinPutDecoration.copyWith(
-                          borderRadius: BorderRadius.circular(5.0),
-                          border: Border.all(
-                            color: darklogoColor,
+                        child: PinFieldAutoFill(
+                          decoration: CirclePinDecoration(
+                            strokeWidth: 1,
+                            gapSpace: ScreenUtil().setSp(10),
+                            textStyle: TextStyle(
+                              color: darklogoColor,
+                              fontSize: ScreenUtil().setSp(17.5),
+                            ),
+                            strokeColorBuilder: FixedColorBuilder(
+                              logoColor,
+                            ),
                           ),
+                          currentCode: Get.find<OTPController>().otp.value,
+                          codeLength: 6,
+                          onCodeChanged: (code) {
+                            print("onCodeChanged $code");
+                            Get.find<OTPController>()
+                                .changeOTP(code.toString());
+                            // setState(() {
+                            //   codeValue = code.toString();
+                            // });
+                          },
+                          onCodeSubmitted: (val) {
+                            print("onCodeSubmitted $val");
+                          },
                         ),
                       ),
+                      // PinPut(
+                      //   eachFieldMargin: EdgeInsets.symmetric(
+                      //     horizontal: ScreenUtil().setSp(5),
+                      //   ),
+                      //   fieldsAlignment: MainAxisAlignment.center,
+                      //   eachFieldConstraints: BoxConstraints(
+                      //     maxHeight: ScreenUtil().setSp(40),
+                      //     maxWidth: ScreenUtil().setSp(40),
+                      //   ),
+                      //   textStyle: TextStyle(
+                      //     fontSize: ScreenUtil().setSp(15),
+                      //   ),
+                      //   separator: SizedBox(
+                      //     width: ScreenUtil().setSp(5),
+                      //   ),
+                      //   fieldsCount: 6,
+                      //   onChanged: (String pins) {
+                      //     setState(() {
+                      //       pin = pins;
+                      //     });
+                      //   },
+                      //   onSubmit: (String pin) {
+                      //     _showSnackBar(pin, context);
+                      //     FocusScope.of(context).unfocus();
+                      //   },
+                      //   validator: (value) {
+                      //     if (value!.trim().isNotEmpty) {
+                      //       return null;
+                      //     } else {
+                      //       return "Please fill otp";
+                      //     }
+                      //   },
+                      //   focusNode: _pinPutFocusNode,
+                      //   controller: _pinPutController,
+                      //   submittedFieldDecoration: _pinPutDecoration,
+                      //   selectedFieldDecoration: _pinPutDecoration,
+                      //   followingFieldDecoration: _pinPutDecoration.copyWith(
+                      //     borderRadius: BorderRadius.circular(5.0),
+                      //     border: Border.all(
+                      //       color: darklogoColor,
+                      //     ),
+                      //   ),
+                      // ),
                       const OurSizedBox(),
                       Container(
                         height: ScreenUtil().setSp(40),
@@ -179,10 +228,18 @@ class _VerifyOPTSignUpScreenState extends State<VerifyOPTSignUpScreen> {
                         child: OurElevatedButton(
                           title: "SignUp",
                           function: () async {
-                            if (pin!.length != 6) {
+                            if (Get.find<OTPController>().otp.value.length !=
+                                6) {
+                              print("==========");
+                              print("==========");
+                              print(Get.find<OTPController>().otp.value);
+                              print("==========");
+                              print("==========");
+
                               OurToast().showErrorToast("Please enter OTP");
                             } else {
-                              _showSnackBar(pin!, context);
+                              _showSnackBar(
+                                  Get.find<OTPController>().otp.value, context);
                             }
                             // if (_phone_number_controller.text.trim().isEmpty) {
                             //   OurToast().showErrorToast("Field can't be empty");

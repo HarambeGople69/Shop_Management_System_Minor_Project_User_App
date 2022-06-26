@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:myapp/services/notification_service/notification_service.dart';
@@ -8,6 +9,7 @@ import 'package:myapp/widget/our_flutter_toast.dart';
 import '../../controller/login_controller.dart';
 import '../../db/db_helper.dart';
 import '../../models/product_model.dart';
+// import 'package:vibration/vibration.dart';
 
 class UserDetailFirestore {
   var firestore = FirebaseFirestore.instance;
@@ -108,6 +110,8 @@ class UserDetailFirestore {
                     "Item added to favourite list",
                     productModel.url,
                   ));
+          // );
+
           OurToast().showSuccessToast("Added to favorite list");
         },
       );
