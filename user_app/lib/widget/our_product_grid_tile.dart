@@ -110,7 +110,7 @@ class _ProductGridTileState extends State<ProductGridTile> {
 // Vibrate
 // Vibration duration is a constant 500ms because
 // it cannot be set to a specific duration on iOS.
-                            Vibrate.vibrate();
+                            
                           },
                           child: Icon(
                             MdiIcons.heartOutline,

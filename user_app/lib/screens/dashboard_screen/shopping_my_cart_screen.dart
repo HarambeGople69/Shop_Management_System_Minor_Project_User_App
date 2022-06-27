@@ -96,10 +96,7 @@ class _ShoppingMyCartScreenState extends State<ShoppingMyCartScreen> {
                                             DocumentSnapshot<
                                                 Map<String, dynamic>>>
                                         snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return Container();
-                                  } else if (snapshot.hasData) {
+                                  if (snapshot.hasData) {
                                     if (snapshot.data!.exists) {
                                       FirebaseUserModel firebaseUserModel =
                                           FirebaseUserModel.fromMap(

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:myapp/models/cart_product_model.dart';
 import 'package:myapp/services/notification_service/notification_service.dart';
 import 'package:uuid/uuid.dart';
@@ -216,6 +217,7 @@ class ProductDetailFirestore {
   }
 
   increaseProductCount(CartProductModel cartProductModel) async {
+
     double totalPrice = 0.0;
     await FirebaseFirestore.instance
         .collection("Carts")
@@ -245,6 +247,8 @@ class ProductDetailFirestore {
   }
 
   decreaseProductCount(CartProductModel cartProductModel) async {
+    await HapticFeedback.vibrate();
+
     double totalPrice = 0.0;
 
     await FirebaseFirestore.instance

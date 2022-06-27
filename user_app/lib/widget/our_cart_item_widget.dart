@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:flutx/flutx.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:myapp/models/cart_product_model.dart';
@@ -118,6 +120,7 @@ class _OurCartItemWidgetState extends State<OurCartItemWidget> {
                   InkWell(
                     onTap: () async {
                       print("Minus buttom pressed");
+                      // await HapticFeedback.vibrate();
                       if (widget.cartProductModel.quantity > 1) {
                         await ProductDetailFirestore()
                             .decreaseProductCount(widget.cartProductModel);
@@ -163,14 +166,21 @@ class _OurCartItemWidgetState extends State<OurCartItemWidget> {
                       child: FxText.sh2(
                         widget.cartProductModel.quantity.toString(),
                         fontWeight: 700,
+                        fontSize: ScreenUtil().setSp(17.5),
                         // key: ValueKey<int?>(_count),
                       ),
                     ),
                   ),
                   InkWell(
-                    onTap: () {
+                    onTap: () async {
                       print("Add button pressed");
-                      ProductDetailFirestore()
+                      // await HapticFeedback.vibrate();
+                      // HapticFeedback.vibrate();
+                      // await HapticFeedback.vibrate();
+                      // await HapticFeedback.heavyImpact();
+                      // await HapticFeedback.lightImpact();
+                      // await HapticFeedback.selectionClick();
+                      await ProductDetailFirestore()
                           .increaseProductCount(widget.cartProductModel);
                     },
                     child: Container(
